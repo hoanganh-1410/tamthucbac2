@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="vi">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ứng Dụng Tam Thức Bậc Hai - THPT</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #0891b2 100%);
+        }
+        
+        .video-overlay {
+            background: rgba(6, 182, 212, 0.8);
+            backdrop-filter: blur(2px);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .count-up {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #0891b2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-sticky {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(8, 145, 178, 0.15);
+        }
+        
+        .icon-bg {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(8, 145, 178, 0.8), rgba(6, 182, 212, 0.8));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .math-formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.3em;
+            color: #0891b2;
+            background: rgba(8, 145, 178, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+            margin: 3rem 0;
+        }
+        
+        /* Video Animation Styles */
+        .video-rise {
+            transform: translateY(20px);
+            opacity: 0.8;
+            transition: all 0.6s ease-out;
+        }
+        
+        .video-rise.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .title-fade {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s ease-out 0.2s;
+        }
+        
+        .title-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* SVG Animations for fallback */
+        .draw-parabola {
+            animation: drawPath 6s ease-in-out infinite;
+        }
+        
+        .draw-profit {
+            animation: drawPath 4s ease-in-out infinite;
+        }
+        
+        .draw-optimization {
+            animation: drawPath 5s ease-in-out infinite;
+        }
+        
+        @keyframes drawPath {
+            0% { stroke-dashoffset: 300; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 0; }
+        }
+        
+        .projectile-ball {
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .dish-curve {
+            transform-origin: center;
+            animation: dishRotate 8s ease-in-out infinite;
+        }
+        
+        @keyframes dishRotate {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(15deg); }
+        }
+        
+        /* CTA Pulse Animation */
+        .cta-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Video container styles */
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .video-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="min-h-full"><!-- Navigation -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+   <div class="container mx-auto px-6 py-4">
+    <div class="flex justify-between items-center">
+     <div class="text-xl font-bold text-white" id="nav-logo">
+      Tam Thức Bậc Hai (Phạm Thoa)
+     </div>
+     <div class="hidden md:flex space-x-6"><a href="#hero" class="nav-link text-white hover:text-cyan-200 transition-colors">Trang chủ</a> <a href="#applications" class="nav-link text-white hover:text-cyan-200 transition-colors">Ứng dụng</a> <a href="#gallery" class="nav-link text-white hover:text-cyan-200 transition-colors">Ví dụ</a> <a href="#exercises" class="nav-link text-white hover:text-cyan-200 transition-colors">Bài tập</a> <a href="#calculator" class="nav-link text-white hover:text-cyan-200 transition-colors">Máy tính</a>
+     </div><button id="mobile-menu" class="md:hidden text-white"> <i class="fas fa-bars text-xl"></i> </button>
+    </div>
+   </div>
+  </nav><!-- Hero Section -->
+  <section id="hero" class="relative min-h-full hero-gradient overflow-hidden"><!-- Video Background Simulation -->
+   <div class="absolute inset-0">
+    <div class="w-full h-full relative"><!-- Animated Parabola SVG -->
+     <svg class="absolute inset-0 w-full h-full animate-float" viewbox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><defs>
+       <lineargradient id="parabolaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.1" />
+       </lineargradient>
+      </defs> <path d="M 100 500 Q 400 100 700 500" stroke="url(#parabolaGradient)" stroke-width="3" fill="none" opacity="0.6" /> <path d="M 150 450 Q 400 150 650 450" stroke="url(#parabolaGradient)" stroke-width="2" fill="none" opacity="0.4" /> <circle cx="400" cy="100" r="8" fill="rgba(255,255,255,0.8)">
+       <animate attributename="r" values="8;12;8" dur="2s" repeatcount="indefinite" />
+      </circle>
+     </svg>
+    </div>
+    <div class="video-overlay absolute inset-0"></div>
+   </div>
+   <div class="relative z-10 container mx-auto px-6 py-32 text-center text-white">
+    <h1 id="hero-title" class="text-5xl md:text-7xl font-bold mb-6 fade-in">Tam Thức Bậc Hai <span class="block text-3xl md:text-4xl font-normal mt-4 text-cyan-100">trong Cuộc Sống</span></h1>
+    <p id="hero-subtitle" class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 fade-in">Khám phá những ứng dụng thú vị của phương trình bậc hai trong thế giới xung quanh chúng ta</p><button id="cta-button" class="bg-white text-cyan-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-cyan-50 transition-all duration-300 transform hover:scale-105 shadow-lg fade-in cta-pulse"> <i class="fas fa-rocket mr-2"></i>Bắt đầu khám phá </button> <!-- Stats -->
+    <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto fade-in">
+     <div class="text-center">
+      <div class="count-up text-white" data-target="6">
+       0
+      </div>
+      <p class="text-cyan-100">Lĩnh vực ứng dụng</p>
+     </div>
+     <div class="text-center">
+      <div class="count-up text-white" data-target="12">
+       0
+      </div>
+      <p class="text-cyan-100">Ví dụ thực tế</p>
+     </div>
+     <div class="text-center">
+      <div class="count-up text-white" data-target="100">
+       0
+      </div>
+      <p class="text-cyan-100">% Hữu ích</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Applications Section -->
+  <section id="applications" class="py-20 bg-gray-50">
+   <div class="container mx-auto px-6">
+    <h2 id="section-title" class="text-4xl font-bold text-center mb-16 text-gray-800 fade-in">Ứng Dụng Trong Thực Tế</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Parabol & Đồ thị -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-blue-400 to-cyan-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="parabola-animation"><defs>
+          <lineargradient id="gridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.4" />
+          </lineargradient>
+         </defs> <!-- Grid lines --> <g stroke="rgba(255,255,255,0.3)" stroke-width="1">
+          <line x1="0" y1="60" x2="200" y2="60" />
+          <line x1="100" y1="0" x2="100" y2="120" />
+          <line x1="0" y1="30" x2="200" y2="30" />
+          <line x1="0" y1="90" x2="200" y2="90" />
+          <line x1="50" y1="0" x2="50" y2="120" />
+          <line x1="150" y1="0" x2="150" y2="120" />
+         </g> <!-- Animated parabola drawing --> <path d="M 20 100 Q 100 20 180 100" stroke="url(#gridGrad)" stroke-width="3" fill="none" stroke-dasharray="300" stroke-dashoffset="300" class="draw-parabola" /> <circle cx="100" cy="20" r="4" fill="white" opacity="0" class="vertex-appear">
+          <animate attributename="opacity" values="0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </circle> <text x="100" y="15" text-anchor="middle" fill="white" font-size="10" opacity="0" class="label-appear">
+          Đỉnh 
+          <animate attributename="opacity" values="0;0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-chart-line text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Parabol &amp; Đồ Thị</h3>
+       <p class="text-gray-600 mb-4">Hình dạng cơ bản của đồ thị hàm số bậc hai, với đỉnh và trục đối xứng đặc trưng.</p>
+       <div class="math-formula">
+        y = ax² + bx + c
+       </div>
+      </div>
+     </div><!-- Vật lý - Ném xiên -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-green-400 to-teal-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="projectile-animation"><defs>
+          <lineargradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.3" />
+          </lineargradient>
+         </defs> <!-- Trajectory path --> <path d="M 20 100 Q 100 40 180 100" stroke="url(#trailGrad)" stroke-width="3" fill="none" stroke-dasharray="8,4" opacity="0.6" /> <!-- Animated ball --> <circle r="6" fill="white" class="projectile-ball">
+          <animatemotion dur="3s" repeatcount="indefinite" rotate="auto">
+           <mpath href="#trajectory" />
+          </animatemotion>
+         </circle> <path id="trajectory" d="M 20 100 Q 100 40 180 100" opacity="0" /> <text x="20" y="115" text-anchor="middle" fill="white" font-size="10">
+          Xuất phát
+         </text> <text x="180" y="115" text-anchor="middle" fill="white" font-size="10">
+          Chạm đất
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-baseball-ball text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Vật Lý - Ném Xiên</h3>
+       <p class="text-gray-600 mb-4">Quỹ đạo của vật thể khi ném xiên trong trọng trường, ứng dụng trong thể thao.</p>
+       <div class="math-formula">
+        h = v₀t - ½gt²
+       </div>
+      </div>
+     </div><!-- Kinh tế -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-purple-400 to-indigo-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="profit-animation"><defs>
+          <lineargradient id="profitGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+           <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.8" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.3" />
+          </lineargradient>
+         </defs> <!-- Axes --> <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(255,255,255,0.5)" stroke-width="2" /> <line x1="20" y1="100" x2="20" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="2" /> <!-- Profit curve --> <path d="M 20 100 Q 100 30 180 100" stroke="url(#profitGrad)" stroke-width="4" fill="none" stroke-dasharray="250" stroke-dashoffset="250" class="draw-profit" /> <!-- Maximum point --> <circle cx="100" cy="30" r="5" fill="white" opacity="0" class="max-point">
+          <animate attributename="opacity" values="0;0;1;1" dur="4s" repeatcount="indefinite" />
+         </circle> <line x1="100" y1="30" x2="100" y2="100" stroke="white" stroke-width="1" stroke-dasharray="2,2" opacity="0" class="max-line">
+          <animate attributename="opacity" values="0;0;0.7;0.7" dur="4s" repeatcount="indefinite" />
+         </line> <text x="100" y="25" text-anchor="middle" fill="white" font-size="10" opacity="0" class="max-label">
+          Lợi nhuận tối đa 
+          <animate attributename="opacity" values="0;0;1;1" dur="4s" repeatcount="indefinite" />
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-chart-area text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Kinh Tế - Tối Ưu Lợi Nhuận</h3>
+       <p class="text-gray-600 mb-4">Tìm mức sản xuất tối ưu để đạt lợi nhuận cao nhất trong kinh doanh.</p>
+       <div class="math-formula">
+        P = -ax² + bx - c
+       </div>
+      </div>
+     </div><!-- Kỹ thuật -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-orange-400 to-red-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="dish-animation"><defs>
+          <radialgradient id="dishGrad" cx="50%" cy="30%" r="70%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+           <stop offset="70%" style="stop-color:#ffffff;stop-opacity:0.6" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.3" />
+          </radialgradient>
+         </defs> <!-- Parabolic dish --> <path d="M 30 100 Q 100 40 170 100" stroke="url(#dishGrad)" stroke-width="6" fill="none" class="dish-curve" /> <!-- Support structure --> <rect x="25" y="95" width="10" height="10" fill="white" opacity="0.8" /> <rect x="165" y="95" width="10" height="10" fill="white" opacity="0.8" /> <!-- Focus point --> <circle cx="100" cy="55" r="3" fill="white" class="focus-point">
+          <animate attributename="r" values="3;5;3" dur="2s" repeatcount="indefinite" />
+         </circle> <!-- Signal rays --> <g opacity="0" class="signal-rays">
+          <line x1="100" y1="55" x2="80" y2="30" stroke="white" stroke-width="2" />
+          <line x1="100" y1="55" x2="100" y2="25" stroke="white" stroke-width="2" />
+          <line x1="100" y1="55" x2="120" y2="30" stroke="white" stroke-width="2" />
+          <animate attributename="opacity" values="0;1;0" dur="3s" repeatcount="indefinite" />
+         </g> <text x="100" y="115" text-anchor="middle" fill="white" font-size="10">
+          Chảo Parabol
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-satellite-dish text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Kỹ Thuật - Chảo Parabol</h3>
+       <p class="text-gray-600 mb-4">Thiết kế chảo parabol, anten vệ tinh và các công trình kỹ thuật có hình parabol.</p>
+       <div class="math-formula">
+        y = ax² + c
+       </div>
+      </div>
+     </div><!-- Tối ưu hóa -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-pink-400 to-rose-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="optimization-animation"><defs>
+          <lineargradient id="blueprintGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.4" />
+          </lineargradient>
+         </defs> <!-- Blueprint grid --> <g stroke="rgba(255,255,255,0.3)" stroke-width="1">
+          <line x1="0" y1="20" x2="200" y2="20" />
+          <line x1="0" y1="40" x2="200" y2="40" />
+          <line x1="0" y1="60" x2="200" y2="60" />
+          <line x1="0" y1="80" x2="200" y2="80" />
+          <line x1="0" y1="100" x2="200" y2="100" />
+          <line x1="40" y1="0" x2="40" y2="120" />
+          <line x1="80" y1="0" x2="80" y2="120" />
+          <line x1="120" y1="0" x2="120" y2="120" />
+          <line x1="160" y1="0" x2="160" y2="120" />
+         </g> <!-- Optimization curve --> <path d="M 20 80 Q 100 20 180 80" stroke="url(#blueprintGrad)" stroke-width="3" fill="none" stroke-dasharray="200" stroke-dashoffset="200" class="draw-optimization" /> <!-- Optimal point --> <circle cx="100" cy="20" r="6" fill="white" opacity="0" class="optimal-point">
+          <animate attributename="opacity" values="0;0;1;1" dur="5s" repeatcount="indefinite" />
+         </circle> <!-- Measuring tape animation --> <g opacity="0" class="measuring-tape">
+          <rect x="95" y="15" width="10" height="3" fill="white" />
+          <line x1="100" y1="20" x2="100" y2="80" stroke="white" stroke-width="1" stroke-dasharray="2,2" />
+          <animate attributename="opacity" values="0;0;1;1" dur="5s" repeatcount="indefinite" />
+         </g> <text x="100" y="12" text-anchor="middle" fill="white" font-size="10" opacity="0" class="optimal-label">
+          Tối ưu 
+          <animate attributename="opacity" values="0;0;1;1" dur="5s" repeatcount="indefinite" />
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-bullseye text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Tối Ưu Hóa Đời Sống</h3>
+       <p class="text-gray-600 mb-4">Tìm giá trị tối ưu trong các bài toán thực tế như tiết kiệm chi phí, thời gian.</p>
+       <div class="math-formula">
+        f(x) = ax² + bx + c
+       </div>
+      </div>
+     </div><!-- Góc Toán -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in">
+      <div class="h-48 relative video-container">
+       <div class="video-fallback bg-gradient-to-br from-cyan-400 to-blue-500">
+        <svg width="200" height="120" viewbox="0 0 200 120" class="math-animation"><defs>
+          <lineargradient id="mathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+           <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.5" />
+          </lineargradient>
+         </defs> <!-- Parabola --> <path d="M 20 100 Q 100 30 180 100" stroke="url(#mathGrad)" stroke-width="3" fill="none" /> <!-- Axis of symmetry --> <line x1="100" y1="30" x2="100" y2="100" stroke="white" stroke-width="1" stroke-dasharray="3,3" opacity="0" class="axis-line">
+          <animate attributename="opacity" values="0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </line> <!-- Vertex --> <circle cx="100" cy="30" r="4" fill="white" opacity="0" class="vertex-point">
+          <animate attributename="opacity" values="0;0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </circle> <!-- Delta symbol --> <text x="120" y="65" fill="white" font-size="16" font-weight="bold" opacity="0" class="delta-symbol">
+          Δ 
+          <animate attributename="opacity" values="0;0;0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </text> <!-- Discriminant info --> <g opacity="0" class="discriminant-info">
+          <text x="50" y="110" fill="white" font-size="8">
+           b² - 4ac
+          </text>
+          <animate attributename="opacity" values="0;0;0;0;1;1;0" dur="6s" repeatcount="indefinite" />
+         </g> <!-- Vertex coordinates --> <text x="100" y="25" text-anchor="middle" fill="white" font-size="8" opacity="0" class="vertex-coords">
+          (-b/2a, f(-b/2a)) 
+          <animate attributename="opacity" values="0;0;1;1;0;0" dur="6s" repeatcount="indefinite" />
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm"><i class="fas fa-calculator text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800 title-fade">Góc Toán - Phân Tích</h3>
+       <p class="text-gray-600 mb-4">Biệt thức Delta, đỉnh parabol, trục đối xứng và các tính chất toán học.</p>
+       <div class="math-formula">
+        Δ = b² - 4ac
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="text-center mt-12"><button id="practice-btn" class="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"> <i class="fas fa-pencil-alt mr-2"></i>Làm bài tập </button>
+    </div>
+   </div>
+  </section><!-- Gallery Section -->
+  <section id="gallery" class="py-20 bg-white">
+   <div class="container mx-auto px-6">
+    <h2 id="gallery-title" class="text-4xl font-bold text-center mb-16 text-gray-800 fade-in">Ví Dụ Thực Tế</h2>
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+     <div class="gallery-item bg-gradient-to-br from-blue-400 to-cyan-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-satellite-dish text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Anten Parabol</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-green-400 to-teal-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-basketball-ball text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Quỹ đạo bóng rổ</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-purple-400 to-indigo-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-water text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Đài phun nước</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-orange-400 to-red-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-car text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Đèn pha ô tô</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-pink-400 to-rose-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-chart-line text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Biểu đồ kinh tế</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-cyan-400 to-blue-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-mountain text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Cầu treo</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-yellow-400 to-orange-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-rocket text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Quỹ đạo tên lửa</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-red-400 to-pink-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-archway text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Vòm kiến trúc</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-indigo-400 to-purple-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-solar-panel text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Tấm pin mặt trời</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-teal-400 to-green-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-football-ball text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Quỹ đạo bóng đá</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-emerald-400 to-cyan-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-telescope text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Gương kính thiên văn</span>
+      </div>
+     </div>
+     <div class="gallery-item bg-gradient-to-br from-violet-400 to-indigo-500 h-48 fade-in">
+      <div class="h-full flex items-center justify-center"><i class="fas fa-industry text-white text-4xl"></i>
+      </div>
+      <div class="gallery-overlay"><span>Tháp làm mát</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Quick Exercises Section -->
+  <section id="exercises" class="py-20 bg-white">
+   <div class="container mx-auto px-6">
+    <h2 class="text-4xl font-bold text-center mb-16 text-gray-800 fade-in">Bài Tập Nhanh</h2>
+    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"><!-- Exercise 1 -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in border-2 border-gray-100">
+      <div class="h-48 bg-gradient-to-br from-blue-400 to-cyan-500 relative">
+       <div class="absolute inset-0 flex items-center justify-center">
+        <svg width="150" height="120" viewbox="0 0 150 120"><path d="M 20 100 Q 75 30 130 100" stroke="white" stroke-width="3" fill="none" /> <circle cx="75" cy="30" r="4" fill="white" /> <text x="75" y="25" text-anchor="middle" fill="white" font-size="10">
+          Cao nhất: 45m
+         </text> <text x="20" y="115" text-anchor="middle" fill="white" font-size="8">
+          0m
+         </text> <text x="130" y="115" text-anchor="middle" fill="white" font-size="8">
+          90m
+         </text>
+        </svg>
+       </div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-basketball-ball text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800">Bài 1: Quỹ Đạo Bóng Rổ</h3>
+       <p class="text-gray-600 mb-4 text-sm">Một quả bóng được ném từ độ cao 2m, đạt độ cao tối đa 45m tại vị trí 45m từ điểm ném. Tìm phương trình quỹ đạo và khoảng cách bóng chạm đất.</p><button class="solution-btn w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-300" data-exercise="1"> <i class="fas fa-eye mr-2"></i>Xem lời giải </button>
+       <div class="solution-content hidden mt-4 p-4 bg-gray-50 rounded-lg border-l-4 border-cyan-500">
+        <p class="font-semibold text-cyan-700 mb-2">Lời giải:</p>
+        <div class="text-sm text-gray-700 space-y-2">
+         <p><strong>Bước 1:</strong> Đặt gốc tọa độ tại điểm ném</p>
+         <p><strong>Phương trình:</strong> h(x) = ax² + bx + c</p>
+         <p><strong>Điều kiện:</strong></p>
+         <ul class="list-disc list-inside ml-4 space-y-1">
+          <li>h(0) = 2 → c = 2</li>
+          <li>h(45) = 45 (đỉnh) → đỉnh tại x = 45</li>
+          <li>Đỉnh: x = -b/(2a) = 45</li>
+         </ul>
+         <p><strong>Kết quả:</strong> h(x) = -0.02x² + 1.8x + 2</p>
+         <p><strong>Chạm đất khi:</strong> h(x) = 0 → x ≈ 91.1m</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Exercise 2 -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in border-2 border-gray-100">
+      <div class="h-48 bg-gradient-to-br from-green-400 to-teal-500 relative">
+       <div class="absolute inset-0 flex items-center justify-center">
+        <svg width="150" height="120" viewbox="0 0 150 120"><path d="M 20 100 Q 75 20 130 100" stroke="white" stroke-width="3" fill="none" /> <circle cx="75" cy="20" r="4" fill="white" /> <text x="75" y="15" text-anchor="middle" fill="white" font-size="10">
+          Lợi nhuận tối đa
+         </text> <text x="20" y="115" text-anchor="middle" fill="white" font-size="8">
+          0 sp
+         </text> <text x="130" y="115" text-anchor="middle" fill="white" font-size="8">
+          150 sp
+         </text>
+        </svg>
+       </div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-chart-line text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800">Bài 2: Tối Ưu Lợi Nhuận</h3>
+       <p class="text-gray-600 mb-4 text-sm">Một công ty có hàm lợi nhuận P(x) = -2x² + 300x - 8000 (x là số sản phẩm). Tìm số sản phẩm cần sản xuất để đạt lợi nhuận tối đa.</p><button class="solution-btn w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-300" data-exercise="2"> <i class="fas fa-eye mr-2"></i>Xem lời giải </button>
+       <div class="solution-content hidden mt-4 p-4 bg-gray-50 rounded-lg border-l-4 border-teal-500">
+        <p class="font-semibold text-teal-700 mb-2">Lời giải:</p>
+        <div class="text-sm text-gray-700 space-y-2">
+         <p><strong>Phương trình:</strong> P(x) = -2x² + 300x - 8000</p>
+         <p><strong>Tìm đỉnh parabol:</strong></p>
+         <ul class="list-disc list-inside ml-4 space-y-1">
+          <li>a = -2, b = 300, c = -8000</li>
+          <li>x = -b/(2a) = -300/(2×(-2)) = 75</li>
+         </ul>
+         <p><strong>Lợi nhuận tối đa:</strong></p>
+         <p>P(75) = -2(75)² + 300(75) - 8000 = 3250</p>
+         <p><strong>Kết luận:</strong> Sản xuất 75 sản phẩm để đạt lợi nhuận tối đa 3,250 đơn vị tiền tệ</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Exercise 3 -->
+     <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in border-2 border-gray-100">
+      <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-500 relative">
+       <div class="absolute inset-0 flex items-center justify-center">
+        <svg width="150" height="120" viewbox="0 0 150 120"><path d="M 20 100 Q 75 40 130 100" stroke="white" stroke-width="4" fill="none" /> <rect x="15" y="95" width="10" height="10" fill="white" /> <rect x="125" y="95" width="10" height="10" fill="white" /> <text x="75" y="35" text-anchor="middle" fill="white" font-size="10">
+          20m
+         </text> <text x="75" y="115" text-anchor="middle" fill="white" font-size="8">
+          Nhịp cầu: 60m
+         </text>
+        </svg>
+       </div>
+       <div class="absolute top-4 left-4">
+        <div class="icon-bg w-12 h-12 rounded-full flex items-center justify-center"><i class="fas fa-bridge text-white text-xl"></i>
+        </div>
+       </div>
+      </div>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold mb-3 text-gray-800">Bài 3: Thiết Kế Cầu Vòm</h3>
+       <p class="text-gray-600 mb-4 text-sm">Một cầu vòm có nhịp 60m, độ cao tối đa 20m tại giữa nhịp. Viết phương trình mô tả hình dạng vòm cầu và tính độ cao tại vị trí 15m từ chân cầu.</p><button class="solution-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-300" data-exercise="3"> <i class="fas fa-eye mr-2"></i>Xem lời giải </button>
+       <div class="solution-content hidden mt-4 p-4 bg-gray-50 rounded-lg border-l-4 border-indigo-500">
+        <p class="font-semibold text-indigo-700 mb-2">Lời giải:</p>
+        <div class="text-sm text-gray-700 space-y-2">
+         <p><strong>Đặt hệ tọa độ:</strong> Gốc tại chân cầu trái</p>
+         <p><strong>Điều kiện:</strong></p>
+         <ul class="list-disc list-inside ml-4 space-y-1">
+          <li>h(0) = 0, h(60) = 0 (chân cầu)</li>
+          <li>h(30) = 20 (đỉnh vòm)</li>
+         </ul>
+         <p><strong>Phương trình:</strong> h(x) = ax² + bx + c</p>
+         <p><strong>Giải hệ:</strong> c = 0, a = -1/45, b = 4/3</p>
+         <p><strong>Kết quả:</strong> h(x) = -x²/45 + 4x/3</p>
+         <p><strong>Tại x = 15m:</strong> h(15) = -225/45 + 60/3 = 15m</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Calculator Section -->
+  <section id="calculator" class="py-20 bg-gray-50">
+   <div class="container mx-auto px-6">
+    <h2 id="calculator-title" class="text-4xl font-bold text-center mb-16 text-gray-800 fade-in">Máy Tính Tam Thức Bậc Hai</h2>
+    <div class="max-w-4xl mx-auto">
+     <div class="bg-white rounded-2xl shadow-xl p-8 fade-in">
+      <div class="text-center mb-8">
+       <div class="math-formula text-3xl mb-4">
+        ax² + bx + c = 0
+       </div>
+       <p class="text-gray-600">Nhập các hệ số để tính nghiệm và vẽ đồ thị</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+       <div><label for="coeff-a" class="block text-sm font-semibold text-gray-700 mb-2"> <i class="fas fa-square text-cyan-600 mr-1"></i>Hệ số a: </label> <input type="number" id="coeff-a" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all" placeholder="1" value="1" step="0.1">
+       </div>
+       <div><label for="coeff-b" class="block text-sm font-semibold text-gray-700 mb-2"> <i class="fas fa-minus text-cyan-600 mr-1"></i>Hệ số b: </label> <input type="number" id="coeff-b" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all" placeholder="0" value="0" step="0.1">
+       </div>
+       <div><label for="coeff-c" class="block text-sm font-semibold text-gray-700 mb-2"> <i class="fas fa-circle text-cyan-600 mr-1"></i>Hệ số c: </label> <input type="number" id="coeff-c" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all" placeholder="-4" value="-4" step="0.1">
+       </div>
+      </div>
+      <div class="text-center mb-8"><button id="calculate-btn" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"> <i class="fas fa-calculator mr-2"></i>Tính Toán &amp; Vẽ Đồ Thị </button>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8"><!-- Results -->
+       <div id="result" class="bg-gray-50 rounded-xl p-6">
+        <h3 class="font-bold text-lg mb-4 text-gray-800"><i class="fas fa-chart-line text-cyan-600 mr-2"></i>Kết quả tính toán:</h3>
+        <div id="result-content" class="text-gray-700 space-y-2"></div>
+       </div><!-- Graph -->
+       <div class="bg-gray-50 rounded-xl p-6">
+        <h3 class="font-bold text-lg mb-4 text-gray-800"><i class="fas fa-project-diagram text-cyan-600 mr-2"></i>Đồ thị parabol:</h3>
+        <div id="graph-container" class="bg-white rounded-lg p-4 border-2 border-gray-200">
+         <svg id="graph" width="100%" height="200" viewbox="0 0 400 200"><!-- Grid --> <defs>
+           <pattern id="grid" width="20" height="20" patternunits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e5e7eb" stroke-width="1" />
+           </pattern>
+          </defs> <rect width="100%" height="100%" fill="url(#grid)" /> <!-- Axes --> <line x1="200" y1="0" x2="200" y2="200" stroke="#6b7280" stroke-width="2" /> <line x1="0" y1="100" x2="400" y2="100" stroke="#6b7280" stroke-width="2" /> <!-- Parabola --> <path id="parabola" d="" stroke="#0891b2" stroke-width="3" fill="none" /> <!-- Vertex --> <circle id="vertex" cx="200" cy="100" r="4" fill="#dc2626" />
+         </svg>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+   <div class="container mx-auto px-6 text-center">
+    <div class="mb-6">
+     <h3 class="text-2xl font-bold mb-2">Tam Thức Bậc Hai</h3>
+     <p class="text-gray-400">Toán học gần gũi với cuộc sống</p>
+    </div>
+    <div class="flex justify-center space-x-6 mb-6"><a href="#hero" class="text-gray-400 hover:text-white transition-colors">Trang chủ</a> <a href="#applications" class="text-gray-400 hover:text-white transition-colors">Ứng dụng</a> <a href="#gallery" class="text-gray-400 hover:text-white transition-colors">Ví dụ</a> <a href="#exercises" class="text-gray-400 hover:text-white transition-colors">Bài tập</a> <a href="#calculator" class="text-gray-400 hover:text-white transition-colors">Máy tính</a>
+    </div>
+    <p class="text-gray-500">© Phạm Thoa Dự án Giáo dục STEM. Học toán một cách thú vị.</p>
+   </div>
+  </footer>
+  <script>
+        // Configuration for Element SDK
+        const defaultConfig = {
+            hero_title: "Tam Thức Bậc Hai",
+            hero_subtitle: "Khám phá những ứng dụng thú vị của phương trình bậc hai trong thế giới xung quanh chúng ta",
+            cta_button: "Bắt đầu khám phá",
+            section_title: "Ứng Dụng Trong Thực Tế",
+            gallery_title: "Ví Dụ Thực Tế",
+            calculator_title: "Máy Tính Tam Thức Bậc Hai"
+        };
+
+        // Element SDK implementation
+        const element = {
+            defaultConfig: defaultConfig,
+            onConfigChange: async (config) => {
+                document.getElementById('hero-title').innerHTML = `${config.hero_title || defaultConfig.hero_title}<span class="block text-3xl md:text-4xl font-normal mt-4 text-cyan-100">trong Cuộc Sống</span>`;
+                document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+                document.getElementById('cta-button').innerHTML = `<i class="fas fa-rocket mr-2"></i>${config.cta_button || defaultConfig.cta_button}`;
+                document.getElementById('section-title').textContent = config.section_title || defaultConfig.section_title;
+                document.getElementById('gallery-title').textContent = config.gallery_title || defaultConfig.gallery_title;
+                document.getElementById('calculator-title').textContent = config.calculator_title || defaultConfig.calculator_title;
+            },
+            mapToCapabilities: (config) => ({
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (config) => new Map([
+                ["hero_title", config.hero_title || defaultConfig.hero_title],
+                ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                ["cta_button", config.cta_button || defaultConfig.cta_button],
+                ["section_title", config.section_title || defaultConfig.section_title],
+                ["gallery_title", config.gallery_title || defaultConfig.gallery_title],
+                ["calculator_title", config.calculator_title || defaultConfig.calculator_title]
+            ])
+        };
+
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init(element);
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const navLogo = document.getElementById('nav-logo');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-sticky');
+                navLogo.classList.remove('text-white');
+                navLogo.classList.add('text-gray-800');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-white', 'hover:text-cyan-200');
+                    link.classList.add('text-gray-700', 'hover:text-cyan-600');
+                });
+            } else {
+                navbar.classList.remove('nav-sticky');
+                navLogo.classList.remove('text-gray-800');
+                navLogo.classList.add('text-white');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-gray-700', 'hover:text-cyan-600');
+                    link.classList.add('text-white', 'hover:text-cyan-200');
+                });
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Video rise animation observer
+        const videoObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const videoElements = entry.target.querySelectorAll('.video-rise, .title-fade');
+                    videoElements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('visible');
+                        }, index * 200);
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.card-hover').forEach(card => {
+            videoObserver.observe(card);
+        });
+
+        // Count-up animation
+        function animateCountUp() {
+            const counters = document.querySelectorAll('.count-up');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 50;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 40);
+            });
+        }
+
+        // Trigger count-up when hero section is visible
+        const heroObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(animateCountUp, 1000);
+                    heroObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        heroObserver.observe(document.getElementById('hero'));
+
+        // CTA button scroll to applications
+        document.getElementById('cta-button').addEventListener('click', function() {
+            document.getElementById('applications').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Practice button scroll to exercises
+        document.getElementById('practice-btn').addEventListener('click', function() {
+            document.getElementById('exercises').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Solution toggle functionality
+        document.querySelectorAll('.solution-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const exerciseNum = this.getAttribute('data-exercise');
+                const solutionContent = this.nextElementSibling;
+                
+                if (solutionContent.classList.contains('hidden')) {
+                    solutionContent.classList.remove('hidden');
+                    solutionContent.classList.add('result-animation');
+                    this.innerHTML = '<i class="fas fa-eye-slash mr-2"></i>Ẩn lời giải';
+                    this.classList.remove('bg-cyan-600', 'hover:bg-cyan-700', 'bg-teal-600', 'hover:bg-teal-700', 'bg-indigo-600', 'hover:bg-indigo-700');
+                    this.classList.add('bg-gray-600', 'hover:bg-gray-700');
+                } else {
+                    solutionContent.classList.add('hidden');
+                    solutionContent.classList.remove('result-animation');
+                    this.innerHTML = '<i class="fas fa-eye mr-2"></i>Xem lời giải';
+                    this.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+                    
+                    // Restore original colors based on exercise
+                    if (exerciseNum === '1') {
+                        this.classList.add('bg-cyan-600', 'hover:bg-cyan-700');
+                    } else if (exerciseNum === '2') {
+                        this.classList.add('bg-teal-600', 'hover:bg-teal-700');
+                    } else if (exerciseNum === '3') {
+                        this.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    }
+                }
+            });
+        });
+
+        // Calculator functionality
+        function calculateQuadratic() {
+            const a = parseFloat(document.getElementById('coeff-a').value) || 0;
+            const b = parseFloat(document.getElementById('coeff-b').value) || 0;
+            const c = parseFloat(document.getElementById('coeff-c').value) || 0;
+            
+            const resultContent = document.getElementById('result-content');
+            
+            if (a === 0) {
+                resultContent.innerHTML = '<p class="text-red-600 font-semibold"><i class="fas fa-exclamation-triangle mr-2"></i>Đây không phải là phương trình bậc hai (a ≠ 0)</p>';
+                return;
+            }
+            
+            const discriminant = b * b - 4 * a * c;
+            const vertex_x = -b / (2 * a);
+            const vertex_y = a * vertex_x * vertex_x + b * vertex_x + c;
+            
+            let resultHTML = `
+                <div class="space-y-3">
+                    <p><strong>Phương trình:</strong> <span class="math-formula">${a}x² + ${b}x + ${c} = 0</span></p>
+                    <p><strong>Biệt thức (Δ):</strong> <span class="text-lg font-mono">${discriminant.toFixed(2)}</span></p>
+                    <p><strong>Đỉnh parabol:</strong> <span class="text-lg font-mono">(${vertex_x.toFixed(2)}, ${vertex_y.toFixed(2)})</span></p>
+            `;
+            
+            if (discriminant > 0) {
+                const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                resultHTML += `
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                        <p class="text-green-700 font-semibold"><i class="fas fa-check-circle mr-2"></i>Hai nghiệm phân biệt:</p>
+                        <p class="font-mono">x₁ = ${x1.toFixed(3)}</p>
+                        <p class="font-mono">x₂ = ${x2.toFixed(3)}</p>
+                    </div>
+                `;
+            } else if (discriminant === 0) {
+                const x = -b / (2 * a);
+                resultHTML += `
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                        <p class="text-blue-700 font-semibold"><i class="fas fa-equals mr-2"></i>Nghiệm kép:</p>
+                        <p class="font-mono">x = ${x.toFixed(3)}</p>
+                    </div>
+                `;
+            } else {
+                resultHTML += `
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <p class="text-orange-700 font-semibold"><i class="fas fa-times-circle mr-2"></i>Vô nghiệm thực</p>
+                        <p class="text-sm text-orange-600">Phương trình có nghiệm phức</p>
+                    </div>
+                `;
+            }
+            
+            resultHTML += '</div>';
+            resultContent.innerHTML = resultHTML;
+            
+            // Draw parabola
+            drawParabola(a, b, c, vertex_x, vertex_y);
+        }
+
+        function drawParabola(a, b, c, vertex_x, vertex_y) {
+            const svg = document.getElementById('graph');
+            const parabola = document.getElementById('parabola');
+            const vertex = document.getElementById('vertex');
+            
+            // Scale factors
+            const scaleX = 20;
+            const scaleY = 10;
+            const centerX = 200;
+            const centerY = 100;
+            
+            // Generate parabola points
+            let pathData = 'M ';
+            for (let x = -10; x <= 10; x += 0.5) {
+                const y = a * x * x + b * x + c;
+                const screenX = centerX + x * scaleX;
+                const screenY = centerY - y * scaleY;
+                
+                if (screenY >= 0 && screenY <= 200) {
+                    pathData += `${screenX},${screenY} `;
+                }
+            }
+            
+            parabola.setAttribute('d', pathData.replace('M ', 'M').replace(/ /g, ' L '));
+            
+            // Position vertex
+            const vertexScreenX = centerX + vertex_x * scaleX;
+            const vertexScreenY = centerY - vertex_y * scaleY;
+            vertex.setAttribute('cx', vertexScreenX);
+            vertex.setAttribute('cy', vertexScreenY);
+        }
+
+        // Calculator event listeners
+        document.getElementById('calculate-btn').addEventListener('click', calculateQuadratic);
+
+        ['coeff-a', 'coeff-b', 'coeff-c'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateQuadratic);
+        });
+
+        // Initial calculation
+        setTimeout(calculateQuadratic, 500);
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            // Simple mobile menu implementation
+            const navLinks = document.querySelector('.hidden.md\\:flex');
+            if (navLinks) {
+                navLinks.classList.toggle('hidden');
+            }
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995b24ddf7cbf8d6',t:'MTc2MTY2MTk2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
